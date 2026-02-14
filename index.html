@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Palak Cutiee🧸 Love Adventure 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  font-family:'Baloo 2',cursive;
+  background:linear-gradient(#ffd6e8,#ffeef6);
+  overflow-x:hidden;
+  text-align:center;
+  color:#ff4d88;
+}
+
+.scene{display:none;padding:40px 20px;min-height:100vh;}
+.active{display:block;}
+
+button{
+  padding:12px 22px;
+  border:none;
+  border-radius:30px;
+  font-size:1em;
+  background:#ff80aa;
+  color:white;
+  margin:10px;
+  cursor:pointer;
+  box-shadow:0 5px 15px rgba(0,0,0,0.15);
+  transition:0.3s;
+}
+button:hover{transform:scale(1.1);}
+
+/* Floating Hearts */
+.heart{
+  position:absolute;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  0%{transform:translateY(100vh);}
+  100%{transform:translateY(-10vh);}
+}
+
+/* Photo Gallery */
+.gallery-container{
+  display:flex;
+  overflow-x:auto;
+  gap:20px;
+  padding:20px;
+  scroll-snap-type:x mandatory;
+}
+.gallery-container::-webkit-scrollbar{display:none;}
+
+.photo-card{
+  min-width:80%;
+  background:linear-gradient(145deg,#ffe6f2,#ffd6e8);
+  border-radius:25px;
+  padding:15px;
+  box-shadow:0 10px 25px rgba(255,105,180,0.3);
+  scroll-snap-align:center;
+  animation:floatCard 4s ease-in-out infinite;
+}
+.photo-card img{
+  width:100%;
+  border-radius:20px;
+  border:5px solid white;
+}
+@keyframes floatCard{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+}
+
+/* Sparkle Explosion */
+.sparkle{
+  position:fixed;
+  font-size:20px;
+  pointer-events:none;
+  animation:explode 1s ease-out forwards;
+}
+@keyframes explode{
+  0%{transform:scale(0) translate(0,0);opacity:1;}
+  100%{transform:scale(2) translate(var(--x), var(--y));opacity:0;}
+}
+
+/* Screen Flash */
+.flash{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:white;
+  opacity:0;
+  pointer-events:none;
+  animation:flashAnim 0.6s ease;
+}
+@keyframes flashAnim{
+  0%{opacity:0;}
+  50%{opacity:0.8;}
+  100%{opacity:0;}
+}
+
+/* YES Text */
+.yesText{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:3em;
+  color:#ff4d88;
+  animation:popText 1s ease forwards;
+  z-index:9999;
+}
+@keyframes popText{
+  0%{transform:translate(-50%,-50%) scale(0);}
+  60%{transform:translate(-50%,-50%) scale(1.3);}
+  100%{transform:translate(-50%,-50%) scale(1);}
+}
+
+/* Music Button */
+#musicBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  border-radius:50%;
+  width:60px;
+  height:60px;
+  font-size:24px;
+  background:#ff99cc;
+  z-index:999;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+const herName="Palak Cutiee🧸";
+
+function insertName(){
+  document.querySelectorAll(".herName").forEach(el=>{
+    el.innerText=herName;
+  });
+}
+window.onload=insertName;
+
+function nextScene(id){
+  document.querySelectorAll(".scene").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function createHearts(){
+  const heart=document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML="💖";
+  heart.style.left=Math.random()*100+"vw";
+  heart.style.fontSize=Math.random()*20+15+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+}
+setInterval(createHearts,500);
+</script>
+
+<!-- Scene 1 -->
+<div class="scene active" id="scene1">
+<h1>Hey <span class="herName"></span> 😘</h1>
+<p>I built something special… only for you 💖</p>
+<button onclick="nextScene('scene2')">Is That You? 👀</button>
+</div>
+
+<!-- Scene 2 -->
+<div class="scene" id="scene2">
+<h1>Catch My Heart 💘</h1>
+<div id="movingHeart" style="font-size:40px;position:absolute;">💘</div>
+
+<script>
+const heart=document.getElementById("movingHeart");
+function moveHeart(){
+  heart.style.top=Math.random()*70+"vh";
+  heart.style.left=Math.random()*80+"vw";
+}
+setInterval(moveHeart,800);
+heart.onclick=function(){
+  alert("Oops "+herName+"… it’s yours now 💖");
+  nextScene('scene3');
+}
+</script>
+</div>
+
+<!-- Scene 3 -->
+<div class="scene" id="scene3">
+<h1>Tap the bubbles 💕</h1>
+<div id="compliments"></div>
+
+<script>
+const texts=[
+herName+" you are illegally adorable.",
+"You make my heart act weird.",
+"Your smile is my weakness.",
+"I think my heart has a crush on you.",
+"You are my favorite notification."
+];
+
+texts.forEach(text=>{
+  let b=document.createElement("button");
+  b.innerHTML="Tap Me 💗";
+  b.onclick=function(){
+    alert(text);
+    b.remove();
+    if(document.querySelectorAll("#compliments button").length===0){
+      setTimeout(()=>nextScene("galleryScene"),1000);
+    }
+  };
+  document.getElementById("compliments").appendChild(b);
+});
+</script>
+</div>
+
+<!-- Gallery -->
+<div class="scene" id="galleryScene">
+<h1>Memories With <span class="herName"></span> 📸💖</h1>
+<div class="gallery-container">
+
+<div class="photo-card">
+<img src="palak.jpg">
+<p>How is <span class="herName"></span> this cute?? 😭💗</p>
+</div>
+
+<div class="photo-card">
+<img src="palak1.jpg">
+<p>This smile = My favorite view 💕</p>
+</div>
+
+<div class="photo-card">
+<img src="palak2.jpg">
+<p>My heart lives here now 🏡💖</p>
+</div>
+
+</div>
+<button onclick="nextScene('scene4')">Continue 💘</button>
+</div>
+
+<!-- Valentine Question -->
+<div class="scene" id="scene4">
+<h1>Will You Be My Valentine? 💕</h1>
+<button onclick="nextScene('scene5')">Yes Obviously 😌</button>
+<button id="noBtn">Hmm Let Me Think 🤔</button>
+
+<script>
+const noBtn=document.getElementById("noBtn");
+noBtn.onmouseover=function(){
+  noBtn.style.position="absolute";
+  noBtn.style.top=Math.random()*70+"vh";
+  noBtn.style.left=Math.random()*70+"vw";
+}
+</script>
+</div>
+
+<!-- Proposal -->
+<div class="scene" id="scene5">
+<h1>If I asked you to marry me someday… 💍</h1>
+<input id="proposalInput" placeholder="Your answer 💕"/>
+<button onclick="finalYes()">Submit</button>
+
+<script>
+function finalYes(){
+  document.getElementById("proposalInput").value="YESSSS 💍";
+
+  const flash=document.createElement("div");
+  flash.classList.add("flash");
+  document.body.appendChild(flash);
+  setTimeout(()=>flash.remove(),600);
+
+  for(let i=0;i<80;i++){
+    const sparkle=document.createElement("div");
+    sparkle.classList.add("sparkle");
+    sparkle.innerHTML="✨";
+    sparkle.style.left=window.innerWidth/2+"px";
+    sparkle.style.top=window.innerHeight/2+"px";
+    const angle=Math.random()*2*Math.PI;
+    const distance=200+Math.random()*200;
+    sparkle.style.setProperty("--x",Math.cos(angle)*distance+"px");
+    sparkle.style.setProperty("--y",Math.sin(angle)*distance+"px");
+    document.body.appendChild(sparkle);
+    setTimeout(()=>sparkle.remove(),1000);
+  }
+
+  const yes=document.createElement("div");
+  yes.classList.add("yesText");
+  yes.innerHTML=herName+" SAID YES 😭💖";
+  document.body.appendChild(yes);
+  setTimeout(()=>yes.remove(),2000);
+}
+</script>
+</div>
+
+<!-- Music -->
+<audio id="bgMusic" loop>
+<source src="darkhaast.mp3" type="audio/mp3">
+</audio>
+<button id="musicBtn">🎵</button>
+
+<script>
+const music=document.getElementById("bgMusic");
+const musicBtn=document.getElementById("musicBtn");
+
+document.body.addEventListener("click",function startMusic(){
+music.volume=0.4;
+music.play();
+document.body.removeEventListener("click",startMusic);
+});
+
+musicBtn.onclick=function(){
+if(music.paused){
+music.play();
+musicBtn.innerHTML="🎵";
+}else{
+music.pause();
+musicBtn.innerHTML="🔇";
+}
+};
+</script>
+
+</body>
+</html>
